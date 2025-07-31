@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RUHİ SMM - Panel</title>
+<style>
+  body {
+    margin:0; padding:20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(270deg, #121212, #1e1e1e, #121212, #1e1e1e);
+    background-size: 800% 800%;
+    animation: gradientAnimation 20s ease infinite;
+    color: #eee;
+  }
+  @keyframes gradientAnimation {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+  }
+  #loginScreen {
+    position: fixed;
+    inset: 0;
+    background: #121212ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    color: #ffd700;
+    text-align: center;
+    user-select:none;
+    z-index: 1000;
+  }
+  #loginScreen h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 5px;
+    position: relative;
+  }
+  #loginScreen h1::before {
+    content: "👑";
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    filter: drop-shadow(0 0 10px #ffd700);
+    animation: crownGlow 2s ease-in-out infinite alternate;
+  }
+  @keyframes crownGlow {
+    0% { filter: drop-shadow(0 0 5px #ffd700);}
+    100% { filter: drop-shadow(0 0 15px #ffea00);}
+  }
+  #loginScreen input[type="password"] {
+    padding: 15px 20px;
+    font-size: 1.3rem;
+    border-radius: 12px;
+    border: none;
+    width: 300px;
+    max-width: 90vw;
+    background: #393e46;
+    color: #eee;
+    text-align: center;
+    outline:none;
+  }
+  #loginScreen button {
+    padding: 15px 40px;
+    font-size: 1.3rem;
+    border-radius: 15px;
+    border: none;
+    background: #3a86ff;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 25px #3a86ffbb;
+    transition: background-color 0.3s ease;
+  }
+  #loginScreen button:hover {
+    background-color: #005fcc;
+  }
+
+  main {
+    max-width: 900px;
+    margin: 60px auto 60px;
+    background: #222831dd;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px #3a86ffbb;
+    color: #eee;
+  }
+  main h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 1rem;
+    position: relative;
+    color: #ffd700;
+  }
+  main h1::before {
+    content: "👑";
+    position: absolute;
+    top: -1.2em;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    filter: drop-shadow(0 0 8px #ffd700);
+    animation: crownGlow 2s ease-in-out infinite alternate;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    color: #eee;
+  }
+  th, td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #393e46;
+    text-align: left;
+  }
+  th {
+    background-color: #393e46;
+  }
+  button.buy-btn {
+    background-color: #3a86ff;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button.buy-btn:hover {
+    background-color: #005fcc;
+  }
+
+  #orderForm {
+    background: #393e46dd;
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px #3a86ffbb;
+    max-width: 600px;
+    margin: 0 auto 50px;
+    display: none;
+    color: #eee;
+  }
+  #orderForm label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    user-select:none;
+  }
+  #orderForm input[type="text"],
+  #orderForm input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 6px;
+    background: #222831;
+    color: #eee;
+    font-size: 1rem;
+  }
+  #orderForm button {
+    margin-top: 25px;
+    padding: 14px 0;
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    background: #3a86ff;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 0 30px #3a86ffbb;
+    transition: background-color 0.3s ease;
+  }
+  #orderForm button:hover {
+    background-color: #005fcc;
+  }
+
+  #paymentInfo {
+    background: #222831dd;
+    padding: 20px 25px;
+    border-radius: 15px;
+    box-shadow: inset 0 0 25px #3a86ff77;
+    max-width: 600px;
+    margin: 0 auto 50px;
+    color: #eee;
+    display: none;
+  }
+  #paymentInfo strong {
+    color: #64b5f6;
+  }
+
+  .info-cards {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+  }
+  .info-card {
+    background: #393e46dd;
+    border-radius: 15px;
+    padding: 20px 25px;
+    box-shadow: 0 0 25px #3a86ff77;
+    width: 280px;
+    user-select:none;
+    color: #eee;
+    transition: transform 0.3s ease;
+  }
+  .info-card:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 40px #3a86ffcc;
+  }
+  .info-card h3 {
+    margin-top: 0;
+    color: #64b5f6;
+  }
+
+  @media (max-width: 700px) {
+    .info-cards {
+      flex-direction: column;
+      align-items: center;
+    }
+    .info-card {
+      width: 90%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="loginScreen" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+  <h1 id="loginTitle">RUHİ SMM GİRİŞ</h1>
+  <input id="passwordInput" type="password" placeholder="Şifre girin" aria-label="Şifre girin" autocomplete="off" />
+  <button id="loginBtn">Giriş Yap</button>
+</div>
+
+<main>
+  <h1>RUHİ SMM</h1>
+  <table>
+    <thead>
+      <tr><th>Hizmet</th><th>Açıklama</th><th>Fiyat (TL)</th><th>Satın Al</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Instagram Takipçi 1K</td><td>Gerçek ve hızlı</td><td>50</td><td><button class="buy-btn" data-name="Instagram Takipçi 1K" data-price="50">Satın Al</button></td></tr>
+      <tr><td>Instagram Takipçi 10K</td><td>Organik takipçi</td><td>300</td><td><button class="buy-btn" data-name="Instagram Takipçi 10K" data-price="300">Satın Al</button></td></tr>
+      <tr><td>Telegram Bot 5K</td><td>Bot katılım</td><td>500</td><td><button class="buy-btn" data-name="Telegram Bot 5K" data-price="500">Satın Al</button></td></tr>
+      <tr><td>Telegram Beğeni</td><td>Gönderiye beğeni</td><td>50</td><td><button class="buy-btn" data-name="Telegram Beğeni" data-price="50">Satın Al</button></td></tr>
+      <tr><td>YouTube Abone</td><td>200 Abone garantili</td><td>200</td><td><button class="buy-btn" data-name="YouTube Abone" data-price="200">Satın Al</button></td></tr>
+    </tbody>
+  </table>
+
+  <form id="orderForm" aria-label="Satın alma formu">
+    <h2>Satın Alma Formu</h2>
+
+    <label for="productName">Ürün:</label>
+    <input type="text" id="productName" readonly />
+
+    <label for="quantity">Adet:</label>
+    <input type="number" id="quantity" min="1" value="1" />
+
+    <label for="accountLink">Hesap / Gönderi Linki:</label>
+    <input type="text" id="accountLink" placeholder="Örn: https://instagram.com/..." />
+
+    <p><strong>Toplam Tutar: <span id="totalPrice">0</span> TL</strong></p>
+
+    <button type="submit">Ödeme Bilgilerini Göster</button>
+  </form>
+
+  <div id="paymentInfo" role="region" aria-live="polite">
+    <p><strong>Ödeme Bilgileri:</strong></p>
+    <p>IBAN: <strong>TR17 0086 9000 0000 0347 5393 73</strong></p>
+    <p>Alıcı: <strong>Osman Akpolat</strong></p>
+    <p>Ödemenizi yaptıktan sonra lütfen Telegram üzerinden iletişime geçin.</p>
+    <p>Telegram: <a href="https://t.me/ruhivisa" target="_blank" rel="noopener">@ruhivisa</a></p>
+  </div>
+
+  <section class="info-cards" aria-label="Şirket hakkında bilgiler">
+    <div class="info-card">
+      <h3>Hakkımızda</h3>
+      <p>2021'den beri sosyal medya alanında güvenilir hizmetler sunuyoruz. Türkiye genelinde binlerce memnun müşterimiz var.</p>
+    </div>
+    <div class="info-card">
+      <h3>İletişim</h3>
+      <p>Email: destek@smmornekpanel.com</p>
+      <p>Telegram: <a href="https://t.me/ruhivisa" target="_blank" rel="noopener">@ruhivisa</a></p>
+    </div>
+    <div class="info-card">
+      <h3>Güvenlik</h3>
+      <p>256-bit SSL koruma ve %100 güvenli ödeme altyapısı ile bilgileriniz güvende.</p>
+    </div>
+    <div class="info-card">
+      <h3>Destek</h3>
+      <p>Her zaman yanınızdayız. Sorularınız için Telegram üzerinden ulaşabilirsiniz.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+  const loginScreen = document.getElementById('loginScreen');
+  const mainContent = document.querySelector('main');
+  const passwordInput = document.getElementById('passwordInput');
+  const loginBtn = document.getElementById('loginBtn');
+
+  // Giriş şifresi kontrolü
+  function checkPassword() {
+    const entered = passwordInput.value.trim().toUpperCase();
+    if (entered === 'RUHİSMM0912'.toUpperCase()) {
+      loginScreen.style.display = 'none';
+      mainContent.style.display = 'block';
+      // Focusu ürünlerin ilk satın alma butonuna verelim
+      document.querySelector('.buy-btn').focus();
+    } else {
+      alert('Şifre yanlış! Tekrar deneyin.');
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  }
+  loginBtn.addEventListener('click', checkPassword);
+  passwordInput.addEventListener('keyup', e => {
+    if(e.key === 'Enter') checkPassword();
+  });
+
+  // Satın al butonları
+  const buyButtons = document.querySelectorAll('.buy-btn');
+  const orderForm = document.getElementById('orderForm');
+  const productNameInput = document.getElementById('productName');
+  const quantityInput = document.getElementById('quantity');
+  const accountLinkInput = document.getElementById('accountLink');
+  const totalPriceSpan = document.getElementById('totalPrice');
+  const paymentInfo = document.getElementById('paymentInfo');
+
+  let currentPrice = 0;
+
+  buyButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.name;
+      const price = Number(btn.dataset.price);
+      currentPrice = price;
+      productNameInput.value = name;
+      quantityInput.value = 1;
+      totalPriceSpan.textContent = price.toFixed(2);
+      accountLinkInput.value = '';
+      orderForm.style.display = 'block';
+      paymentInfo.style.display = 'none';
+      accountLinkInput.focus();
+      window.scrollTo({top: orderForm.offsetTop - 20, behavior: 'smooth'});
+    });
+  });
+
+  quantityInput.addEventListener('input', () => {
+    let qty = parseInt(quantityInput.value);
+    if (isNaN(qty) || qty < 1) {
+      qty = 1;
+      quantityInput.value = 1;
+    }
+    const total = currentPrice * qty;
+    totalPriceSpan.textContent = total.toFixed(2);
+  });
+
+  orderForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if(!productNameInput.value) {
+      alert('Lütfen önce ürün seçin!');
+      return;
+    }
+    if(!accountLinkInput.value.trim()) {
+      alert('Lütfen hesap veya gönderi linki girin!');
+      accountLinkInput.focus();
+      return;
+    }
+    paymentInfo.style.display = 'block';
+    window.scrollTo({top: paymentInfo.offsetTop - 20, behavior: 'smooth'});
+  });
+</script>
+
+</body>
+</html>
